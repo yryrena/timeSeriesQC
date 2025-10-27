@@ -1,0 +1,79 @@
+---
+title: "Time Series QC Report"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: true
+params:
+  payload_path: "qc_meta.json"
+---
+
+```{r}
+payload <- jsonlite::read_json(params$payload_path, simplifyVector = TRUE)
+library(ggplot2)
+```
+
+# Overview
+
+| Metric | Value |
+|---|---|
+| Series | `r payload$meta$n_series` |
+| Rows | `r payload$meta$nrow_raw` |
+| Range | `r payload$meta$start` — `r payload$meta$end` |
+| Frequency | `r payload$meta$freq_resolved` |
+| Timezone | `r payload$meta$tz` |
+
+---
+
+# Issues
+
+```{r}
+if (!is.null(payload$issues) && nrow(payload$issues) > 0) {
+  print(utils::head(payload$issues, 1000))
+} else {
+  cat("No issues detected or empty issues table.")
+}
+```
+
+---
+
+# Features
+
+```{r}
+if (!is.null(payload$features) && nrow(payload$features) > 0) {
+  print(payload$features)
+} else {
+  cat("No features computed.")
+}
+```
+
+---
+
+# Fix Log
+
+```{r}
+if (!is.null(payload$fix_log) && nrow(payload$fix_log) > 0) {
+  print(payload$fix_log)
+} else {
+  cat("No fixes applied.")
+}
+```
+
+---
+
+# Thumbnail wall (lightweight)
+
+```{r}
+samp <- payload$sample
+if (!is.null(samp) && nrow(samp) > 0) {
+  ids <- unique(samp$id)[1:min(12, length(unique(samp$id)))]
+  for (the_id in ids) {
+    df <- subset(samp, id == the_id)
+    p <- ggplot(df, aes(time, value)) + geom_line() + ggtitle(the_id)
+    print(p)
+  }
+} else {
+  cat("No sample data available.")
+}
+```

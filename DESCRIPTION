@@ -1,0 +1,42 @@
+Package: timeSeriesQC
+Title: Preflight Quality Control for Panel and Long Time Series
+Version: 0.1.0
+Authors@R: 
+    person("Ruiyi", "Yang", email = "yryrena@gmail.com", role = c("aut", "cre"))
+Description: Provides tools to scan, flag, and repair common data quality issues 
+    in panel and long-format time series. Functions detect duplicates, gaps, 
+    outliers, and structural breakpoints (via 'strucchange'), and compute 
+    features such as stationarity tests and seasonal strength (via 'tseries', 
+    'urca', and 'feasts'). Suggested fixes can be applied traceably, and results 
+    can be exported to HTML reports (via 'quarto' or 'rmarkdown').
+License: MIT + file LICENSE
+URL: https://github.com/yryrena/timeSeriesQC
+BugReports: https://github.com/yryrena/timeSeriesQC/issues
+Encoding: UTF-8
+Depends: 
+    R (>= 4.1)
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
+Imports: 
+    cli,
+    dplyr,
+    fabletools,
+    feasts,
+    jsonlite,
+    rlang,
+    strucchange,
+    tidyr,
+    tsibble, 
+    zoo
+Suggests: 
+    quarto,
+    rmarkdown,
+    knitr,
+    ggplot2,
+    tseries,
+    seasonal,
+    x13binary, 
+    urca,
+    withr,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
